@@ -1,0 +1,16 @@
+{
+    "java.project.sourcePaths": [
+        "primer proyecto/src",
+        "primer proyecto/lib"
+    ],
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\alexn\\OneDrive\\Desktop\\Lib\\gluegen-rt.jar",
+        "c:\\Users\\alexn\\OneDrive\\Desktop\\Lib\\gluegen-rt-natives-windows-amd64.jar",
+        "c:\\Users\\alexn\\OneDrive\\Desktop\\Lib\\jogl-all.jar",
+        "c:\\Users\\alexn\\gluegen-rt.jar",
+        "c:\\Users\\alexn\\jogl-all.jar",
+        "c:\\Users\\alexn\\Native\\gluegen-rt-natives-windows-amd64.jar",
+        "c:\\Users\\alexn\\Native\\joal-android-natives-windows-amd64.jar"
+    ]
+}
