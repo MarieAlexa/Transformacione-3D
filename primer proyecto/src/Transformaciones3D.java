@@ -47,7 +47,7 @@
 <div id="legend"></div>
 <canvas id="canvas" width="700" height="520"></canvas>
 <script>
-/* ------------ Modelos de vértices ------------ */
+
 const OBJS = {
   pyramid: {
     name: 'Pirámide',
@@ -95,7 +95,7 @@ const OBJS = {
 };
 
 
-/* ------------ Parámetros globales ------------ */
+
 let active = {
   object: 'pyramid',
   verts: [],
@@ -103,7 +103,7 @@ let active = {
   faces: [],
   proj: 'ortho',
   transform: 'none',
-  // Historial de transformaciones
+ 
   transMat: mat4identity()
 };
 
@@ -114,9 +114,9 @@ const transformSelect = document.getElementById('transform-select');
 const projSelect = document.getElementById('proj-select');
 const paramsDiv = document.getElementById('params');
 
-/* ----------- Funciones de Matriz y 3D ----------- */
 
-// Producto matriz 4x4 y vector 4 (homogéneo)
+
+
 function mat4mul(mat, v) {
   let r = [0,0,0,0];
   for(let i=0;i<4;i++)
@@ -143,19 +143,18 @@ function mat4identity() {
     [0,0,0,1]
   ];
 }
-// Traslación
-function mat4translate(dx,dy,dz) {
+{
   let m = mat4identity();
   m[0][3]=dx; m[1][3]=dy; m[2][3]=dz;
   return m;
 }
-// Escalado
+
 function mat4scale(sx,sy,sz) {
   let m = mat4identity();
   m[0][0]=sx; m[1][1]=sy; m[2][2]=sz;
   return m;
 }
-// Rotación alrededor de eje arbitrario (Rodrigues)
+
 function mat4rotateAxis(angleDeg, x, y, z) {
   let angle = angleDeg * Math.PI/180;
   let l = Math.sqrt(x*x+y*y+z*z); if(l===0){x=1;y=0;z=0;l=1;}
@@ -169,11 +168,11 @@ function mat4rotateAxis(angleDeg, x, y, z) {
   ];
 }
 
-// Proyecciones
+
 function project3D([x,y,z], type, opt) {
-  // opt: {ortho: {l,r,b,t,n,f}, frustum: ... , persp: {fov,a,n,f}}
+  
   if(type==="ortho") {
-    // Trasladar y escalar de volumen ortho a [-1,1]
+    
     let {l,r,b,t,n,f} = opt;
     let xn = (x-(l+r)/2)/((r-l)/2);
     let yn = (y-(b+t)/2)/((t-b)/2);
@@ -181,7 +180,7 @@ function project3D([x,y,z], type, opt) {
     return [xn, yn, zn];
   }
   if(type==="frustum") {
-    // Aproximación: frustum asimétrico proyectado
+   
     let {l,r,b,t,n,f} = opt;
     let xn = (2*n*x)/(r-l)-((r+l)/(r-l));
     let yn = (2*n*y)/(t-b)-((t+b)/(t-b));
@@ -199,7 +198,7 @@ function project3D([x,y,z], type, opt) {
   return [x,y,z];
 }
 
-// Multiplica array de vértices por matriz4x4 transformaciones
+
 function applyMatToVerts(verts, mat) {
   return verts.map(([x,y,z]) => {
     let v4 = mat4mul(mat,[x,y,z,1]);
@@ -207,7 +206,7 @@ function applyMatToVerts(verts, mat) {
   });
 }
 
-/* --------- UI dinámica para parámetros --------- */
+
 function updateUIParams() {
   let html = "";
   let t = transformSelect.value;
@@ -230,7 +229,7 @@ function updateUIParams() {
       <span id="ucustom"></span>`;
   }
   paramsDiv.innerHTML = html;
-  // UI extra si eje rota = custom
+  
   if(t==="rotate") {
     document.getElementById('axis').onchange = function() {
       if(this.value=="u") {
@@ -247,10 +246,10 @@ function updateUIParams() {
 transformSelect.onchange = updateUIParams;
 window.onload = updateUIParams;
 
-/* ----------- Interactividad ------------- */
+
 
 function applyTransform() {
-  // Selección de objeto y reseteo de matriz si cambia
+ 
   let objval = objectSelect.value;
   if(active.object !== objval) {
     active.transMat = mat4identity();
@@ -294,7 +293,7 @@ function applyTransform() {
   drawScene();
 }
 
-// Resetea
+
 function resetAll() {
   let objval = objectSelect.value;
   active.transMat = mat4identity();
@@ -318,12 +317,12 @@ let camRotY = 30, camRotX = -20;
 
 function drawScene() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  // Proyección y vista
+ 
   let pd = projParams[active.proj];
   let verts = active.verts || OBJS[active.object].verts;
   
-  let camMatY = mat4rotateAxis(camRotY,0,1,0); // Yaw
-  let camMatX = mat4rotateAxis(camRotX,1,0,0); // Pitch
+  let camMatY = mat4rotateAxis(camRotY,0,1,0); 
+  let camMatX = mat4rotateAxis(camRotX,1,0,0); 
   let camMat = mat4mulmat(camMatX,camMatY);
   let viewVerts = applyMatToVerts(verts, camMat);
 
